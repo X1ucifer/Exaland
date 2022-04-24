@@ -1,0 +1,15 @@
+{
+    "id": "header-data-1",
+    "logo": [
+        {
+            "src": "/images/logo/logo1.png"
+        },
+        {
+            "src": "/images/logo/logo1.png"
+        },
+        {
+            "text":"ExaLand"
+        }
+    ],
+    "activity_link": "/activity"
+}
