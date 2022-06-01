@@ -33,9 +33,9 @@ const Header = ({ className }) => {
                 <div className="container">
                     <div className="header-inner">
                         <div className="header-left">
-                            
+
                             <Logo logo={headerData.logo} />
-                            
+
                             <div className="mainmenu-wrapper">
                                 <nav
                                     id="sideNav"

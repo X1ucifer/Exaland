@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 const CreateNewArea = ({ className, space }) => {
     const [showProductModal, setShowProductModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
+    const [selectedVideo, setSelectedVideo] = useState();
     const [hasImageError, setHasImageError] = useState(false);
     const [previewData, setPreviewData] = useState({});
 
@@ -32,6 +33,7 @@ const CreateNewArea = ({ className, space }) => {
     const imageChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
             setSelectedImage(e.target.files[0]);
+            setSelectedVideo(e.target.files[0]);
         }
     };
 
@@ -85,6 +87,19 @@ const CreateNewArea = ({ className, space }) => {
                                         />
                                         {selectedImage && (
                                             <img
+                                                id="createfileImage"
+                                                src={URL.createObjectURL(
+                                                    selectedImage
+                                                )}
+                                                alt=""
+                                                data-black-overlay="6"
+                                            />
+                                        )}
+                                        {selectedVideo && (
+                                            <video
+                                                autoPlay
+                                                muted
+                                                loop
                                                 id="createfileImage"
                                                 src={URL.createObjectURL(
                                                     selectedImage

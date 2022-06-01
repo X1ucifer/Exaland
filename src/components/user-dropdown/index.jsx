@@ -46,26 +46,7 @@ const UserDropdown = () => {
                             </div>
                             <div className="button" />
                         </li>
-                        <li className="single-product-list">
-                            <div className="thumbnail">
-                                <Anchor path="/product">
-                                    <Image
-                                        src="/images/portfolio/portfolio-01.jpg"
-                                        alt="Nft Product Images"
-                                        layout="fixed"
-                                        width={50}
-                                        height={50}
-                                    />
-                                </Anchor>
-                            </div>
-                            <div className="content">
-                                <h6 className="title">
-                                    <Anchor path="/product">Balance</Anchor>
-                                </h6>
-                                <span className="price">25 ETH</span>
-                            </div>
-                            <div className="button" />
-                        </li>
+
                     </ul>
                 </div>
                 <div className="add-fund-button mt--20 pb--20">
@@ -74,6 +55,12 @@ const UserDropdown = () => {
                         path="/connect"
                     >
                         Add Your More Funds
+                    </Anchor>
+                    <Anchor
+                        className="btn btn-primary-alta w-100 mt-3"
+                        path="/upload"
+                    >
+                        Create
                     </Anchor>
                 </div>
                 <ul className="list-inner">

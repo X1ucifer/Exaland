@@ -14,7 +14,7 @@ const Home = () => (
         <SEO pageTitle="Upload Variants" />
         <Header />
         <main id="main-content">
-            <Breadcrumb pageTitle="Upload Variants" />
+            {/* <Breadcrumb pageTitle="Upload Variants" /> */}
             <UploadVariants />
         </main>
         <Footer />
