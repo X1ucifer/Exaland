@@ -7,6 +7,18 @@ import Button from "@ui/button";
 import ProductModal from "@components/modals/product-modal";
 import ErrorText from "@ui/error-text";
 import { toast } from "react-toastify";
+import { ethers } from 'ethers'
+import { create as ipfsHttpClient } from 'ipfs-http-client'
+import { useRouter } from 'next/router'
+import Web3Modal from 'web3modal'
+import {
+    marketplaceAddress
+} from '../../../config'
+
+import NFTMarketplace from '../../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
+
+const client = ipfsHttpClient('https://gateway.pinata.cloud/ipfs')
+
 
 const CreateNewArea = ({ className, space }) => {
     const [showProductModal, setShowProductModal] = useState(false);
@@ -14,6 +26,66 @@ const CreateNewArea = ({ className, space }) => {
     const [selectedVideo, setSelectedVideo] = useState();
     const [hasImageError, setHasImageError] = useState(false);
     const [previewData, setPreviewData] = useState({});
+
+    const [fileUrl, setFileUrl] = useState(null)
+    const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
+    const router = useRouter()
+
+
+
+    async function onChange(e) {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedImage(e.target.files[0]);
+            setSelectedVideo(e.target.files[0]);
+        }
+        const file = e.target.files[0]
+        try {
+            const added = await client.add(
+                file,
+                {
+                    progress: (prog) => console.log(`received: ${prog}`)
+                }
+            )
+            const url = `https://gateway.pinata.cloud/ipfs/${added.path}`
+            setFileUrl(url)
+        } catch (error) {
+            console.log('Error uploading file: ', error)
+        }
+    }
+    async function uploadToIPFS() {
+        const { name, description, price } = formInput
+        if (!name || !description || !price || !fileUrl) return
+        /* first, upload to IPFS */
+        const data = JSON.stringify({
+            name, description, image: fileUrl
+        })
+        try {
+            const added = await client.add(data)
+            const url = `https://gateway.pinata.cloud/ipfs/${added.path}`
+            /* after file is uploaded to IPFS, return the URL to use it in the transaction */
+            return url
+        } catch (error) {
+            console.log('Error uploading file: ', error)
+        }
+    }
+
+    async function listNFTForSale() {
+        const url = await uploadToIPFS()
+        const web3Modal = new Web3Modal()
+        const connection = await web3Modal.connect()
+        const provider = new ethers.providers.Web3Provider(connection)
+        const signer = provider.getSigner()
+
+        /* next, create the item */
+        const price = ethers.utils.parseUnits(formInput.price, 'ether')
+        let contract = new ethers.Contract(marketplaceAddress, NFTMarketplace.abi, signer)
+        let listingPrice = await contract.getListingPrice()
+        listingPrice = listingPrice.toString()
+        let transaction = await contract.createToken(url, price, { value: listingPrice })
+        await transaction.wait()
+
+        router.push('/')
+    }
 
     const {
         register,
@@ -30,12 +102,7 @@ const CreateNewArea = ({ className, space }) => {
     };
 
     // This function will be triggered when the file field change
-    const imageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setSelectedImage(e.target.files[0]);
-            setSelectedVideo(e.target.files[0]);
-        }
-    };
+
 
     const onSubmit = (data, e) => {
         const { target } = e;
@@ -83,7 +150,7 @@ const CreateNewArea = ({ className, space }) => {
                                             className="inputfile"
                                             data-multiple-caption="{count} files selected"
                                             multiple
-                                            onChange={imageChange}
+                                            onChange={onChange}
                                         />
                                         {selectedImage && (
                                             <img
@@ -95,19 +162,7 @@ const CreateNewArea = ({ className, space }) => {
                                                 data-black-overlay="6"
                                             />
                                         )}
-                                        {selectedVideo && (
-                                            <video
-                                                autoPlay
-                                                muted
-                                                loop
-                                                id="createfileImage"
-                                                src={URL.createObjectURL(
-                                                    selectedImage
-                                                )}
-                                                alt=""
-                                                data-black-overlay="6"
-                                            />
-                                        )}
+
 
                                         <label
                                             htmlFor="file"
@@ -160,6 +215,7 @@ const CreateNewArea = ({ className, space }) => {
                                                         required:
                                                             "Name is required",
                                                     })}
+                                                    onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
                                                 />
                                                 {errors.name && (
                                                     <ErrorText>
@@ -179,6 +235,7 @@ const CreateNewArea = ({ className, space }) => {
                                                 </label>
                                                 <textarea
                                                     id="discription"
+                                                    onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
                                                     rows="3"
                                                     placeholder="e. g. “After purchasing the product you can get item...”"
                                                     {...register(
@@ -209,17 +266,10 @@ const CreateNewArea = ({ className, space }) => {
                                                     Item Price in $
                                                 </label>
                                                 <input
+                                                    onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
                                                     id="price"
                                                     placeholder="e. g. `20$`"
-                                                    {...register("price", {
-                                                        pattern: {
-                                                            value: /^[0-9]+$/,
-                                                            message:
-                                                                "Please enter a number",
-                                                        },
-                                                        required:
-                                                            "Price is required",
-                                                    })}
+
                                                 />
                                                 {errors.price && (
                                                     <ErrorText>
@@ -229,7 +279,7 @@ const CreateNewArea = ({ className, space }) => {
                                             </div>
                                         </div>
 
-                                        <div className="col-md-4">
+                                        {/* <div className="col-md-4">
                                             <div className="input-box pb--20">
                                                 <label
                                                     htmlFor="Size"
@@ -305,7 +355,7 @@ const CreateNewArea = ({ className, space }) => {
                                                     </ErrorText>
                                                 )}
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         <div className="col-md-4 col-sm-4">
                                             <div className="input-box pb--20 rn-check-box">
@@ -373,7 +423,7 @@ const CreateNewArea = ({ className, space }) => {
 
                                         <div className="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                             <div className="input-box">
-                                                <Button type="submit" fullwidth>
+                                                <Button type="submit" onClick={listNFTForSale} fullwidth>
                                                     Submit Item
                                                 </Button>
                                             </div>
