@@ -4,7 +4,7 @@ import SectionTitle from "@components/section-title/layout-01";
 import Product from "@components/product/layout-01";
 import { SectionTitleType, ProductType } from "@utils/types";
 
-const LiveExploreArea = ({ data, className, space, gap }) => (
+const LiveExploreArea = ({ nfts, className, space, gap }) => (
     <div
         className={clsx(
             "rn-live-bidding-area",
@@ -13,16 +13,16 @@ const LiveExploreArea = ({ data, className, space, gap }) => (
         )}
     >
         <div className="container">
-            {data?.section_title && (
+            {nfts?.name && (
                 <div className="row mb--50">
                     <div className="col-lg-12">
-                        <SectionTitle {...data.section_title} />
+                        <SectionTitle name={nfts.name} />
                     </div>
                 </div>
             )}
-            {data?.products && (
+            {nfts && (
                 <div className={clsx("row", gap && `g-${gap}`)}>
-                    {data.products.map((prod) => (
+                    {nfts.map((prod) => (
                         <div
                             key={prod.id}
                             className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
@@ -32,16 +32,16 @@ const LiveExploreArea = ({ data, className, space, gap }) => (
                         >
                             <Product
                                 overlay
-                                placeBid={!!data.placeBid}
-                                title={prod.title}
-                                slug={prod.slug}
-                                auction_date={prod.auction_date}
-                                latestBid={prod.latestBid}
+                                placeBid="ssa"
+                                title={prod.name}
+                                id={prod.tokenId}
+                                auction_date="12 June"
+                                latestBid="sdsd"
                                 price={prod.price}
-                                likeCount={prod.likeCount}
-                                image={prod.images?.[0]}
-                                authors={prod.authors}
-                                bitCount={prod.bitCount}
+                                likeCount="1"
+                                image={prod.image}
+                                authors={prod.seller}
+                                bitCount="dd"
                             />
                         </div>
                     ))}

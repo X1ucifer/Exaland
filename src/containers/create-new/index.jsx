@@ -17,7 +17,7 @@ import {
 
 import NFTMarketplace from '../../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
 
-const client = ipfsHttpClient('https://gateway.pinata.cloud/ipfs')
+const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 
 const CreateNewArea = ({ className, space }) => {
@@ -34,10 +34,10 @@ const CreateNewArea = ({ className, space }) => {
 
 
     async function onChange(e) {
-        if (e.target.files && e.target.files.length > 0) {
-            setSelectedImage(e.target.files[0]);
-            setSelectedVideo(e.target.files[0]);
-        }
+
+        setSelectedImage(e.target.files[0]);
+        setSelectedVideo(e.target.files[0]);
+
         const file = e.target.files[0]
         try {
             const added = await client.add(
@@ -46,7 +46,7 @@ const CreateNewArea = ({ className, space }) => {
                     progress: (prog) => console.log(`received: ${prog}`)
                 }
             )
-            const url = `https://gateway.pinata.cloud/ipfs/${added.path}`
+            const url = `https://ipfs.infura.io/ipfs/${added.path}`
             setFileUrl(url)
         } catch (error) {
             console.log('Error uploading file: ', error)
@@ -54,14 +54,14 @@ const CreateNewArea = ({ className, space }) => {
     }
     async function uploadToIPFS() {
         const { name, description, price } = formInput
-        if (!name || !description || !price || !fileUrl) return
+
         /* first, upload to IPFS */
         const data = JSON.stringify({
             name, description, image: fileUrl
         })
         try {
             const added = await client.add(data)
-            const url = `https://gateway.pinata.cloud/ipfs/${added.path}`
+            const url = `https://ipfs.infura.io/ipfs/${added.path}`
             /* after file is uploaded to IPFS, return the URL to use it in the transaction */
             return url
         } catch (error) {
@@ -162,6 +162,19 @@ const CreateNewArea = ({ className, space }) => {
                                                 data-black-overlay="6"
                                             />
                                         )}
+                                        {selectedVideo && (
+                                            <video
+                                                autoPlay
+                                                loop
+                                                muted
+                                                id="createfileImage"
+                                                src={URL.createObjectURL(
+                                                    selectedVideo
+                                                )}
+                                                alt=""
+                                                data-black-overlay="6"
+                                            />
+                                        )}
 
 
                                         <label
@@ -235,7 +248,7 @@ const CreateNewArea = ({ className, space }) => {
                                                 </label>
                                                 <textarea
                                                     id="discription"
-                                                    onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
+
                                                     rows="3"
                                                     placeholder="e. g. “After purchasing the product you can get item...”"
                                                     {...register(
@@ -245,6 +258,7 @@ const CreateNewArea = ({ className, space }) => {
                                                                 "Discription is required",
                                                         }
                                                     )}
+                                                    onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
                                                 />
                                                 {errors.discription && (
                                                     <ErrorText>

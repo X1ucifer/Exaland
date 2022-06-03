@@ -82,6 +82,8 @@ const Home02 = () => {
     }
     if (loadingState === 'loaded' && !nfts.length) return (<h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>)
 
+    console.log("ndtss", nfts)
+
     const content = normalizedData(homepageData?.content || []);
     const liveAuctionData = productData
         .filter(
@@ -101,10 +103,7 @@ const Home02 = () => {
             <main id="main-content">
                 <HeroArea data={content["hero-section"]} />
                 <LiveExploreArea
-                    data={{
-                        ...content["live-explore-section"],
-                        products: liveAuctionData,
-                    }}
+                    nfts={nfts}
                 />
                 <ServiceArea data={content["service-section"]} />
                 <ExploreProductArea
