@@ -52,7 +52,7 @@ const Product = ({
                             />
                         </Anchor>
                     )}
-                    {/* {auction_date && <CountdownTimer date={auction_date} />} */}
+                    {auction_date && <CountdownTimer date={auction_date} />}
                     {/* {placeBid && (
                         <Button onClick={handleBidModal} size="small">
                             Place Bid

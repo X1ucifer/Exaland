@@ -152,16 +152,7 @@ const CreateNewArea = ({ className, space }) => {
                                             multiple
                                             onChange={onChange}
                                         />
-                                        {selectedImage && (
-                                            <img
-                                                id="createfileImage"
-                                                src={URL.createObjectURL(
-                                                    selectedImage
-                                                )}
-                                                alt=""
-                                                data-black-overlay="6"
-                                            />
-                                        )}
+
                                         {selectedVideo && (
                                             <video
                                                 autoPlay
@@ -186,8 +177,58 @@ const CreateNewArea = ({ className, space }) => {
                                                 Choose a File
                                             </span>
                                             <p className="text-center mt--10">
-                                                PNG, GIF, WEBP, MP4 or MP3.{" "}
+                                                MP4 or MP3.{" "}
                                                 <br /> Max 1Gb.
+                                            </p>
+                                        </label>
+                                    </div>
+                                    {hasImageError && !selectedImage && (
+                                        <ErrorText>Video is required</ErrorText>
+                                    )}
+                                </div>
+
+                                <div className="upload-area">
+                                    <div className="upload-formate mb--30">
+                                        <h6 className="title">Upload file</h6>
+                                        <p className="formate">
+                                            Drag or choose your file to upload
+                                        </p>
+                                    </div>
+
+                                    <div className="brows-file-wrapper">
+                                        <input
+                                            name="file"
+                                            id="file"
+                                            type="file"
+                                            className="inputfile"
+                                            data-multiple-caption="{count} files selected"
+                                            multiple
+                                            onChange={onChange}
+                                        />
+                                        {selectedImage && (
+                                            <img
+                                                id="createfileImage"
+                                                src={URL.createObjectURL(
+                                                    selectedImage
+                                                )}
+                                                alt=""
+                                                data-black-overlay="6"
+                                            />
+                                        )}
+
+
+
+                                        <label
+                                            htmlFor="file"
+                                            title="No File Choosen"
+                                        >
+                                            <i className="feather-upload" />
+                                            <span className="text-center">
+                                                Choose a File
+                                            </span>
+                                            <p className="text-center mt--10">
+                                                PNG, GIF, WEBP, JPEG.{" "}
+                                                <br /> Cover Photo.
                                             </p>
                                         </label>
                                     </div>
@@ -268,6 +309,32 @@ const CreateNewArea = ({ className, space }) => {
                                                         }
                                                     </ErrorText>
                                                 )}
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-12">
+                                            <div className="input-box pb--20">
+                                                <label
+                                                    htmlFor="Discription"
+                                                    className="form-label"
+                                                >
+                                                    Sale Date
+                                                </label>
+                                                <input
+                                                    id="name"
+                                                    placeholder="e. g. `22 June 2022`"
+                                                    {...register("name", {
+                                                        required:
+                                                            "Date is required",
+                                                    })}
+                                                    onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
+                                                />
+                                                {errors.name && (
+                                                    <ErrorText>
+                                                        {errors.name?.message}
+                                                    </ErrorText>
+                                                )}
+
                                             </div>
                                         </div>
 
@@ -371,56 +438,11 @@ const CreateNewArea = ({ className, space }) => {
                                             </div>
                                         </div> */}
 
-                                        <div className="col-md-4 col-sm-4">
-                                            <div className="input-box pb--20 rn-check-box">
-                                                <input
-                                                    className="rn-check-box-input"
-                                                    type="checkbox"
-                                                    id="putonsale"
-                                                />
-                                                <label
-                                                    className="rn-check-box-label"
-                                                    htmlFor="putonsale"
-                                                >
-                                                    Put on Sale
-                                                </label>
-                                            </div>
-                                        </div>
 
-                                        <div className="col-md-4 col-sm-4">
-                                            <div className="input-box pb--20 rn-check-box">
-                                                <input
-                                                    className="rn-check-box-input"
-                                                    type="checkbox"
-                                                    id="instantsaleprice"
-                                                />
-                                                <label
-                                                    className="rn-check-box-label"
-                                                    htmlFor="instantsaleprice"
-                                                >
-                                                    Instant Sale Price
-                                                </label>
-                                            </div>
-                                        </div>
 
-                                        <div className="col-md-4 col-sm-4">
-                                            <div className="input-box pb--20 rn-check-box">
-                                                <input
-                                                    className="rn-check-box-input"
-                                                    type="checkbox"
-                                                    id="unlockpurchased"
-                                                />
-                                                <label
-                                                    className="rn-check-box-label"
-                                                    htmlFor="unlockpurchased"
-                                                >
-                                                    Unlock Purchased
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div className="col-md-12 col-xl-4">
-                                            <div className="input-box">
+                                        <div className="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
+                                            {/* <div className="col-md-12 col-xl-4"> */}
+                                            <div className="input-box mb--10 mt--10">
                                                 <Button
                                                     color="primary-alta"
                                                     fullwidth
@@ -433,14 +455,14 @@ const CreateNewArea = ({ className, space }) => {
                                                     Preview
                                                 </Button>
                                             </div>
-                                        </div>
+                                            {/* </div> */}
 
-                                        <div className="col-md-12 col-xl-8 mt_lg--15 mt_md--15 mt_sm--15">
                                             <div className="input-box">
                                                 <Button type="submit" onClick={listNFTForSale} fullwidth>
                                                     Submit Item
                                                 </Button>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

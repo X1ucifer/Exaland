@@ -1,4 +1,4 @@
-import { useReducer, useRef, useEffect, useCallback } from "react";
+import { useReducer, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import SectionTitle from "@components/section-title/layout-02";
@@ -7,6 +7,14 @@ import ProductFilter from "@components/product-filter/layout-01";
 import FilterButton from "@ui/filter-button";
 import { slideToggle } from "@utils/methods";
 import { SectionTitleType, ProductType } from "@utils/types";
+import { ethers } from 'ethers'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import Web3Modal from 'web3modal'
+import {
+    marketplaceAddress
+} from '../../../../config'
+import NFTMarketplace from '../../../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
 
 function reducer(state, action) {
     switch (action.type) {
@@ -22,6 +30,41 @@ function reducer(state, action) {
 }
 
 const ExploreProductArea = ({ className, space, data }) => {
+
+    const [nfts, setNfts] = useState([])
+    const [loadingState, setLoadingState] = useState('not-loaded')
+    useEffect(() => {
+        loadNFTs()
+    }, [])
+    async function loadNFTs() {
+        /* create a generic provider and query for unsold market items */
+        const provider = new ethers.providers.JsonRpcProvider()
+        const contract = new ethers.Contract(marketplaceAddress, NFTMarketplace.abi, provider)
+        const data = await contract.fetchMarketItems()
+
+        /*
+        *  map over items returned from smart contract and format 
+        *  them as well as fetch their token metadata
+        */
+        const items = await Promise.all(data.map(async i => {
+            const tokenUri = await contract.tokenURI(i.tokenId)
+            const meta = await axios.get(tokenUri)
+            let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+            let item = {
+                price,
+                tokenId: i.tokenId.toNumber(),
+                seller: i.seller,
+                owner: i.owner,
+                image: meta.data.image,
+                name: meta.data.name,
+                description: meta.data.description,
+            }
+            return item
+        }))
+        setNfts(items)
+        setLoadingState('loaded')
+    }
+
     const itemsToFilter = [...data.products];
     const [state, dispatch] = useReducer(reducer, {
         filterToggle: false,
@@ -127,24 +170,30 @@ const ExploreProductArea = ({ className, space, data }) => {
                 <div className="row g-5">
                     {state.products.length > 0 ? (
                         <>
-                            {state.products.slice(0, 10).map((prod) => (
+                            {nfts.map((prod) => (
                                 <div
                                     key={prod.id}
                                     className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
                                 >
-                                    <Product
-                                        overlay
-                                        placeBid={!!data.placeBid}
-                                        title={prod.title}
-                                        slug={prod.slug}
-                                        latestBid={prod.latestBid}
-                                        price={prod.price}
-                                        likeCount={prod.likeCount}
-                                        auction_date={prod.auction_date}
-                                        image={prod.images?.[0]}
-                                        authors={prod.authors}
-                                        bitCount={prod.bitCount}
-                                    />
+                                    {loadingState === 'loaded' && !nfts.length ? (
+                                        <p style={{ textAlign: "center", marginTop: "100px" }}>No items in marketplace</p>)
+
+                                        :
+
+                                        <Product
+                                            overlay
+                                            placeBid="ssa"
+                                            title={prod.name}
+                                            id={prod.tokenId}
+                                            auction_date="12 June"
+                                            latestBid="sdsd"
+                                            price={prod.price}
+                                            likeCount="1"
+                                            image={prod.image}
+                                            authors={prod.seller}
+                                            bitCount="0"
+                                        />
+                                    }
                                 </div>
                             ))}
                         </>
