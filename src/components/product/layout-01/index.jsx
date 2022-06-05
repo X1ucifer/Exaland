@@ -53,11 +53,11 @@ const Product = ({
                         </Anchor>
                     )}
                     {/* {auction_date && <CountdownTimer date={auction_date} />} */}
-                    {placeBid && (
+                    {/* {placeBid && (
                         <Button onClick={handleBidModal} size="small">
                             Place Bid
                         </Button>
-                    )}
+                    )} */}
                 </div>
                 <div className="product-share-wrapper">
                     <div className="profile-share">
@@ -82,7 +82,7 @@ const Product = ({
                     <span className="product-name">{title}</span>
                 </Anchor>
                 {/* <span className="latest-bid">Highest bid {latestBid}</span> */}
-                <ProductBid price={price} />
+                <ProductBid price={parseFloat(price)} />
             </div>
             <PlaceBidModal show={showBidModal} handleModal={handleBidModal} />
         </>
@@ -94,10 +94,7 @@ Product.propTypes = {
     title: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     latestBid: PropTypes.string.isRequired,
-    price: PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        currency: PropTypes.string.isRequired,
-    }).isRequired,
+    price: PropTypes.string.isRequired,
     likeCount: PropTypes.number.isRequired,
     auction_date: PropTypes.string,
     image: ImageType.isRequired,

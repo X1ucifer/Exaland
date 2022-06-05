@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Product from "@components/product/layout-01";
 import { ProductType } from "@utils/types";
 
-const ProductArea = ({ space, className, data }) => (
+const ProductArea = ({ space, className, products }) => (
     <div
         className={clsx(
             "product-area",
@@ -20,12 +20,13 @@ const ProductArea = ({ space, className, data }) => (
                         data-sal="slide-up"
                         data-sal-duration="800"
                     >
-                        {data?.section_title.title}
+                        {/* {products.name} */}
+                        opjoij
                     </h3>
                 </div>
             </div>
             <div className="row g-5">
-                {data?.products?.map((prod) => (
+                {products && products.map((prod) => (
                     <div
                         key={prod.id}
                         data-sal="slide-up"
@@ -34,15 +35,19 @@ const ProductArea = ({ space, className, data }) => (
                         className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
                     >
                         <Product
-                            title={prod.title}
-                            slug={prod.slug}
-                            latestBid={prod.latestBid}
+
+                            overlay
+                            placeBid="ssa"
+                            title={prod.name}
+                            id={prod.tokenId}
+                            auction_date="12 June"
+                            latestBid="sdsd"
                             price={prod.price}
-                            likeCount={prod.likeCount}
-                            auction_date={prod.auction_date}
-                            image={prod.images?.[0]}
-                            authors={prod.authors}
-                            bitCount={prod.bitCount}
+                            likeCount="1"
+                            image={prod.image}
+                            authors={prod.seller}
+                            bitCount="0"
+
                         />
                     </div>
                 ))}

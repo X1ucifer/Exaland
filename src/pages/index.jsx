@@ -80,7 +80,7 @@ const Home02 = () => {
         await transaction.wait()
         loadNFTs()
     }
-    if (loadingState === 'loaded' && !nfts.length) return (<h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>)
+
 
     console.log("ndtss", nfts)
 
@@ -102,28 +102,13 @@ const Home02 = () => {
             <Header />
             <main id="main-content">
                 <HeroArea data={content["hero-section"]} />
-                <LiveExploreArea
-                    nfts={nfts}
-                />
+                {loadingState === 'loaded' && !nfts.length ? (<p style={{ textAlign: "center", marginTop: "100px" }}>No items in marketplace</p>) :
+                    <LiveExploreArea
+                        nfts={nfts}
+                    />
+                }
                 <ServiceArea data={content["service-section"]} />
-                <ExploreProductArea
-                    data={{
-                        ...content["explore-product-section"],
-                        products: productData,
-                    }}
-                />
-                <TopSellerArea
-                    data={{
-                        ...content["top-sller-section"],
-                        sellers: sellerData,
-                    }}
-                />
-                <CollectionArea
-                    data={{
-                        ...content["collection-section"],
-                        collections: collectionsData.slice(0, 4),
-                    }}
-                />
+
             </main>
             <Footer />
         </Wrapper>

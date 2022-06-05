@@ -4,6 +4,7 @@ module.exports = {
 
     images: {
         domains: ['img.seadn.io'],
+        domains:['https://nuron-nextjs.vercel.app/']
       },
       
     reactStrictMode: true,

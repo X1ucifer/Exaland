@@ -13,7 +13,7 @@ const LiveExploreArea = ({ nfts, className, space, gap }) => (
         )}
     >
         <div className="container">
-            {nfts?.name && (
+            {nfts && (
                 <div className="row mb--50">
                     <div className="col-lg-12">
                         <SectionTitle name={nfts.name} />
@@ -26,8 +26,8 @@ const LiveExploreArea = ({ nfts, className, space, gap }) => (
                         <div
                             key={prod.id}
                             className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
-                            data-sal-delay="150"
-                            data-sal="slide-up"
+                            // data-sal-delay="150"
+                            // data-sal="slide-up"
                             data-sal-duration="800"
                         >
                             <Product
@@ -41,7 +41,7 @@ const LiveExploreArea = ({ nfts, className, space, gap }) => (
                                 likeCount="1"
                                 image={prod.image}
                                 authors={prod.seller}
-                                bitCount="dd"
+                                bitCount="0"
                             />
                         </div>
                     ))}

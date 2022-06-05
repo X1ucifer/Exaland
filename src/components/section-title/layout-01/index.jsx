@@ -3,16 +3,16 @@ import clsx from "clsx";
 
 const SectionTitle = ({ name, align, className, ...rest }) => (
     <div className={clsx(`section-title text-${align}`, className)} {...rest}>
-        {name && (
-            <h3
-                className={clsx("title mb--0 live-bidding-title")}
-                data-sal-delay="150"
-                data-sal="slide-up"
-                data-sal-duration="800"
-            >
-                {name}
-            </h3>
-        )}
+
+        <h3
+            className={clsx("title mb--0 live-bidding-title")}
+        // data-sal-delay="150"
+        // data-sal="slide-up"
+        // data-sal-duration="800"
+        >
+            New Collections
+        </h3>
+
     </div>
 );
 

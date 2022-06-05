@@ -17,7 +17,7 @@
     "prettier.endOfLine": "lf",
     "[javascript]": {
         "editor.tabSize": 4,
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
     "eslint.validate": ["react", "html", "javascript", "typescript"],

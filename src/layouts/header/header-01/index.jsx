@@ -93,12 +93,12 @@ const Header = ({ className }) => {
                                     <BurgerButton onClick={offcanvasHandler} />
                                 </div>
                             </div>
-                            <div
+                            {/* <div
                                 id="my_switcher"
                                 className="setting-option my_switcher"
                             >
                                 <ColorSwitcher />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

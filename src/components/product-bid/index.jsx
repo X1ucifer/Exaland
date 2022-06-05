@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 const ProductBid = ({ price, likeCount }) => (
     <div className="bid-react-area">
         <div className="last-bid">
-            {price.amount}
-            {price.currency}
+            {price} Weth
+
         </div>
         <div className="react-area">
             <svg
@@ -26,10 +26,7 @@ const ProductBid = ({ price, likeCount }) => (
 );
 
 ProductBid.propTypes = {
-    price: PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        currency: PropTypes.string.isRequired,
-    }).isRequired,
+    price: PropTypes.string.isRequired,
     likeCount: PropTypes.number.isRequired,
 };
 

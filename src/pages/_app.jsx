@@ -26,7 +26,7 @@ const MyApp = ({ Component, pageProps }) => {
     });
     return (
         <MoralisProvider appId={moralisAppId} serverUrl={moralisServerURL}>
-            <ThemeProvider defaultTheme="dark">
+            <ThemeProvider >
                 <Component {...pageProps} />
             </ThemeProvider>
         </MoralisProvider>
