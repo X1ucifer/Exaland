@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-const EditProfileImage = () => {
+const EditProfileImage = ({ profile_image, setProfileImg, }) => {
     const [selectedImage, setSelectedImage] = useState({
         profile: "",
         cover: "",
@@ -16,6 +16,12 @@ const EditProfileImage = () => {
         }
     };
 
+    const profileChange = (e) => {
+        // if (e.target.files && e.target.files.length > 0) {
+        setProfileImg(e.target.files[0]);
+        // }
+    };
+
     return (
         <div className="nuron-information">
             <div className="profile-change row g-5">
@@ -23,11 +29,11 @@ const EditProfileImage = () => {
                     <div className="profile-image mb--30">
                         <h6 className="title">Change Your Profile Picture</h6>
                         <div className="img-wrap">
-                            {selectedImage?.profile ? (
+                            {setProfileImg ? (
                                 <img
-                                    src={URL.createObjectURL(
-                                        selectedImage.profile
-                                    )}
+                                    src={
+                                        profile_image
+                                    }
                                     alt=""
                                     data-black-overlay="6"
                                 />
@@ -47,7 +53,7 @@ const EditProfileImage = () => {
                                 name="profile"
                                 id="fatima"
                                 type="file"
-                                onChange={imageChange}
+                                onChange={profileChange}
                             />
                             <label htmlFor="fatima" title="No File Choosen">
                                 <span className="text-center color-white">

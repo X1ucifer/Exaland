@@ -14,12 +14,35 @@ import Button from "@ui/button";
 import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
 import headerData from "../../../data/general/header-01.json";
 import menuData from "../../../data/general/menu-01.json";
+import React from "react";
+import { useRouter } from "next/router";
 
 const Header = ({ className }) => {
     const sticky = useSticky();
     const { offcanvas, offcanvasHandler } = useOffcanvas();
     const { search, searchHandler } = useFlyoutSearch();
-    const { authenticate, isAuthenticated } = useMoralis();
+    const { authenticate, isAuthenticated, user } = useMoralis();
+
+    const router = useRouter();
+
+    const auth = async () => {
+
+
+        await authenticate()
+            .then(function (user) {
+                console.log(user.get("ethAddress"));
+                router.push("/edit-profile")
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+
+
+    }
+
+
 
     return (
         <>
@@ -68,7 +91,7 @@ const Header = ({ className }) => {
                                             color="primary-alta"
                                             className="connectBtn"
                                             size="small"
-                                            onClick={() => authenticate()}
+                                            onClick={auth}
                                         >
                                             Wallet connect
                                         </Button>
