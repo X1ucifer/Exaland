@@ -32,7 +32,7 @@ const ProductDetailsArea = ({ space, className, data }) => {
                 <div className="row g-5">
                     <div className="col-lg-7 col-md-12 col-sm-12">
                         <Sticky>
-                            <GalleryTab images="" />
+                            <GalleryTab images={data.Image_cover} />
                         </Sticky>
                     </div>
                     <div className="col-lg-5 col-md-12 col-sm-12 mt_md--50 mt_sm--60">
@@ -50,7 +50,7 @@ const ProductDetailsArea = ({ space, className, data }) => {
                             </span>
                             <h6 className="title-name">#22 Portal , Info bellow</h6>
                             <div className="catagory-collection">
-                                <ProductCategory owner={data.owner} />
+                                <ProductCategory owner={`Author: ${data.author_name}`} />
                                 {/* <ProductCollection
                                     collection={product.collection}
                                 /> */}
@@ -68,7 +68,7 @@ const ProductDetailsArea = ({ space, className, data }) => {
                                 /> */}
                                 <PlaceBet
                                     // highest_bid={product.highest_bid}
-                                    auction_date={"20 June 2022"}
+                                    auction_date={data.date}
                                     data={data}
                                 />
                             </div>

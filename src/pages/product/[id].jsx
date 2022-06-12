@@ -47,6 +47,9 @@ const ProductDetails = () => {
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 price,
+                Image_cover: meta.data.Image_cover,
+                date: meta.data.date,
+                author_name: meta.data.author_name,
                 tokenId: i.tokenId.toNumber(),
                 seller: i.seller,
                 owner: i.owner,

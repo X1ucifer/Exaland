@@ -31,7 +31,7 @@ const ProductModal = ({ show, handleModal, data }) => (
                     currency: "wETH",
                 }}
                 likeCount={300}
-                image={{ src: URL.createObjectURL(data.image) }}
+                image={data.image}
                 authors={[
                     {
                         name: "Mark Jordan",

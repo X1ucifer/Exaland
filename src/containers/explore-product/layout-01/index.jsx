@@ -52,6 +52,10 @@ const ExploreProductArea = ({ className, space, data }) => {
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 price,
+
+                Image_cover: meta.data.Image_cover,
+                date: meta.data.date,
+                author_name: meta.data.author_name,
                 tokenId: i.tokenId.toNumber(),
                 seller: i.seller,
                 owner: i.owner,
@@ -185,12 +189,13 @@ const ExploreProductArea = ({ className, space, data }) => {
                                             placeBid="ssa"
                                             title={prod.name}
                                             id={prod.tokenId}
-                                            auction_date="12 June"
+                                            auction_date={prod.date}
                                             latestBid="sdsd"
                                             price={prod.price}
                                             likeCount="1"
-                                            image={prod.image}
-                                            authors={prod.seller}
+                                            tokenURI={prod.tokenURI}
+                                            image={prod.Image_cover}
+                                            authors={prod.author_name}
                                             bitCount="0"
                                         />
                                     }

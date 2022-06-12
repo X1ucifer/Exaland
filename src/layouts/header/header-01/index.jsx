@@ -14,14 +14,33 @@ import Button from "@ui/button";
 import { useOffcanvas, useSticky, useFlyoutSearch } from "@hooks";
 import headerData from "../../../data/general/header-01.json";
 import menuData from "../../../data/general/menu-01.json";
-import React from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Context } from "../../../context";
+
+
 
 const Header = ({ className }) => {
+
+    const {
+
+        dispatch,
+    } = useContext(Context);
+
+    // useEffect(() => {
+    //     console.log("uuuuu", user)
+    // }, [user])
+
     const sticky = useSticky();
     const { offcanvas, offcanvasHandler } = useOffcanvas();
     const { search, searchHandler } = useFlyoutSearch();
     const { authenticate, isAuthenticated, user } = useMoralis();
+
+    const [wallet, setWallet] = React.useState("")
+    const [userinfo, setUser] = React.useState([])
+    const [extractuser, setExtract] = React.useState([])
 
     const router = useRouter();
 
@@ -31,16 +50,23 @@ const Header = ({ className }) => {
         await authenticate()
             .then(function (user) {
                 console.log(user.get("ethAddress"));
-                router.push("/edit-profile")
+                setWallet(user.get("ethAddress"))
+
+
+
+
+
             })
             .catch(function (error) {
                 console.log(error);
             });
 
 
-
-
     }
+
+
+
+
 
 
 

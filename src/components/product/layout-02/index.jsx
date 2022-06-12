@@ -40,7 +40,14 @@ const ProductMynft = ({
                 <div className="card-thumbnail">
                     {image && (
                         <Anchor path={`/resale/${id}`}>
-                            <video
+
+                            <Image
+                                src={image}
+
+                                width={image?.width ? image.width : 430}
+                                height={image?.height ? image.height : 430}
+                            />
+                            {/* <video
                                 muted
                                 loop
                                 autoPlay
@@ -48,7 +55,7 @@ const ProductMynft = ({
                                 // alt={image?.alt || "NFT_portfolio"}
                                 width={533}
                                 height={533}
-                            />
+                            /> */}
                         </Anchor>
                     )}
                     {/* {auction_date && <CountdownTimer date={auction_date} />} */}

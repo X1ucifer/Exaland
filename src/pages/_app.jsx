@@ -8,9 +8,11 @@ import "../assets/css/bootstrap.min.css";
 import "../assets/css/feather.css";
 import "../assets/scss/style.scss";
 import "react-toastify/dist/ReactToastify.css";
+import { Provider } from "../context";
 
-const moralisAppId = "txspihPqWSviNdn452CFhlu4XTStsseoWkptAtqa";
-const moralisServerURL = "https://coedmifpp6gh.usemoralis.com:2053/server";
+
+const moralisAppId = "Zgi9h3xvYrvXHJZmYjgzbfxlTPnDq6H3RytmW0qt";
+const moralisServerURL = "https://mrnuat16od8z.usemoralis.com:2053/server";
 
 const MyApp = ({ Component, pageProps }) => {
     const router = useRouter();
@@ -25,11 +27,13 @@ const MyApp = ({ Component, pageProps }) => {
         document.body.className = `${pageProps.className}`;
     });
     return (
-        <MoralisProvider appId={moralisAppId} serverUrl={moralisServerURL}>
-            <ThemeProvider >
-                <Component {...pageProps} />
-            </ThemeProvider>
-        </MoralisProvider>
+        <Provider>
+            <MoralisProvider appId={moralisAppId} serverUrl={moralisServerURL}>
+                <ThemeProvider >
+                    <Component {...pageProps} />
+                </ThemeProvider>
+            </MoralisProvider>
+        </Provider>
     );
 };
 

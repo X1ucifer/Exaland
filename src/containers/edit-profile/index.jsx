@@ -9,8 +9,25 @@ import PersonalInformation from "./personal-information";
 import ChangePassword from "./change-password";
 import NotificationSetting from "./notification-setting";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
+
+
 
 const EditProfile = () => {
+
+    const { authenticate, isAuthenticated, user } = useMoralis();
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            setWallet(user.get("ethAddress"));
+            console.log("iuiu", user.get("ethAddress"))
+        }
+    }, [isAuthenticated]);
 
 
     const [name, setName] = useState("");
@@ -24,6 +41,63 @@ const EditProfile = () => {
     const [cover_image, setCoverImg] = useState({});
     const [profile_image, setProfileImg] = useState({});
 
+    const [profiledisplay, setDisplayProfile] = useState("");
+    const [coverdisplay, setDisplayCover] = useState("");
+
+
+    const handleProfile = async (e) => {
+        e.preventDefault();
+        console.table({
+            name,
+            email,
+            bio,
+            gender,
+            location,
+            role,
+            cover_image,
+            profile_image,
+            wallet_add,
+            ph_no
+        });
+        try {
+            const { data } = await axios.post(
+                `/api/v1/profile`, {
+
+                name,
+                email,
+                bio,
+                gender,
+                location,
+                role,
+                cover_image,
+                profile_image,
+                wallet_add,
+                ph_no
+
+            }
+
+
+            );
+
+            router.push("/author");
+            // console.log(data)
+            // setValues({ ...values, title: "", content: "", video: {}, time: "" });
+            setName("");
+            setEmail("");
+            // setTitle("");
+            // setBgvideo({});
+            // setWatchnow({});
+            // setProgress(0);
+            // setProgress1(0);
+            // setUploadButtonText1("Upload video");
+            // setUploadButtonText("Upload AMV video");
+            // setSeries(data);
+            // toast.success("Series added");
+        } catch (err) {
+            console.log(err);
+            toast.success("Profile added ");
+        }
+    };
 
 
     return (
@@ -59,17 +133,12 @@ const EditProfile = () => {
                         <div className="col-lg-9 col-md-9 col-sm-12 mt_sm--30">
                             <TabContent className="tab-content-edit-wrapepr">
                                 <TabPane eventKey="nav-home">
-                                    <EditProfileImage setProfileImg={setProfileImg} profile_image={profile_image} />
+                                    <EditProfileImage setProfileImg={setProfileImg} profile_image={profile_image} setCoverImg={setCoverImg} cover_image={cover_image} profiledisplay={profiledisplay} setDisplayProfile={setDisplayProfile} coverdisplay={coverdisplay} setDisplayCover={setDisplayCover} />
                                 </TabPane>
                                 <TabPane eventKey="nav-homes">
-                                    <PersonalInformation />
+                                    <PersonalInformation name={name} setName={setName} email={email} setEmail={setEmail} bio={bio} setBio={setBio} ph_no={ph_no} setPhone={setPhone} gender={gender} setGender={setGender} location={location} setLocation={setLocation} role={role} setRole={setRole} handleProfile={handleProfile} />
                                 </TabPane>
-                                <TabPane eventKey="nav-profile">
-                                    <ChangePassword />
-                                </TabPane>
-                                <TabPane eventKey="nav-contact">
-                                    <NotificationSetting />
-                                </TabPane>
+
                             </TabContent>
                         </div>
                     </div>

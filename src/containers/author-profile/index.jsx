@@ -47,26 +47,31 @@ const AuthorProfileArea = ({ className, data }) => {
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 price,
+                tokenURI,
+                Image_cover: meta.data.Image_cover,
+                date: meta.data.date,
+                author_name: meta.data.author_name,
                 tokenId: i.tokenId.toNumber(),
                 seller: i.seller,
                 owner: i.owner,
                 image: meta.data.image,
-                tokenURI
+                name: meta.data.name,
+                description: meta.data.description,
             }
             return item
         }))
         setNfts(items)
         setLoadingState('loaded')
-        console.log("mynft", nfts)
+
     }
     // function listNFT(nft) {
     //     console.log('nft:', nft)
     //     router.push(`/resell-nft?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)
     // }
-
+    console.log("mynft", nfts)
     useEffect(() => {
         loadNFTs()
-    }, [nfts.length > 0])
+    }, [])
 
     async function onSaleNFTs() {
         /* create a generic provider and query for unsold market items */
@@ -84,6 +89,9 @@ const AuthorProfileArea = ({ className, data }) => {
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 price,
+                Image_cover: meta.data.Image_cover,
+                date: meta.data.date,
+                author_name: meta.data.author_name,
                 tokenId: i.tokenId.toNumber(),
                 seller: i.seller,
                 owner: i.owner,
@@ -119,10 +127,15 @@ const AuthorProfileArea = ({ className, data }) => {
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 price,
+                Image_cover: meta.data.Image_cover,
+                date: meta.data.date,
+                author_name: meta.data.author_name,
                 tokenId: i.tokenId.toNumber(),
                 seller: i.seller,
                 owner: i.owner,
                 image: meta.data.image,
+                name: meta.data.name,
+                description: meta.data.description,
             }
             return item
         }))
@@ -186,20 +199,20 @@ const AuthorProfileArea = ({ className, data }) => {
                                     key={prod.id}
                                     className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
                                 >
-                                    {loadingState === 'loaded' && !nfts.length ?
+                                    {loadingState === 'loaded' && !onsalenfts.length ?
                                         <p>No NFTs listed</p> :
                                         <Product
                                             overlay
                                             placeBid="ssa"
                                             title={prod.name}
                                             id={prod.tokenId}
-                                            auction_date="12 June"
+                                            auction_date={prod.date}
                                             latestBid="sdsd"
                                             price={prod.price}
                                             likeCount="1"
                                             tokenURI={prod.tokenURI}
-                                            image={prod.image}
-                                            authors={prod.seller}
+                                            image={prod.Image_cover}
+                                            authors={prod.author_name}
                                             bitCount="0"
                                         />
                                     }
@@ -216,20 +229,20 @@ const AuthorProfileArea = ({ className, data }) => {
                                     key={prod.id}
                                     className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
                                 >
-                                    {loadingState === 'loaded' && !nfts.length ?
+                                    {loadingState !== 'loaded' && !nfts.length ?
                                         <p>No NFTs owned</p> :
                                         <ProductMynft
                                             overlay
                                             placeBid="ssa"
                                             title={prod.name}
                                             id={prod.tokenId}
-                                            auction_date="12 June"
+                                            auction_date={prod.date}
                                             latestBid="sdsd"
                                             price={prod.price}
                                             likeCount="1"
                                             tokenURI={prod.tokenURI}
-                                            image={prod.image}
-                                            authors={prod.seller}
+                                            image={prod.Image_cover}
+                                            authors={prod.author_name}
                                             bitCount="0"
                                         />
 
@@ -247,20 +260,20 @@ const AuthorProfileArea = ({ className, data }) => {
                                     key={prod.id}
                                     className="col-5 col-lg-4 col-md-6 col-sm-6 col-12"
                                 >
-                                    {loadingState === 'loaded' && !nfts.length ?
+                                    {loadingState === 'loaded' && !listednfts.length ?
                                         <p>No NFTs listed</p> :
                                         <Product
                                             overlay
                                             placeBid="ssa"
                                             title={prod.name}
                                             id={prod.tokenId}
-                                            auction_date="12 June"
+                                            auction_date={prod.date}
                                             latestBid="sdsd"
                                             price={prod.price}
                                             likeCount="1"
                                             tokenURI={prod.tokenURI}
-                                            image={prod.image}
-                                            authors={prod.seller}
+                                            image={prod.Image_cover}
+                                            authors={prod.author_name}
                                             bitCount="0"
                                         />
                                     }

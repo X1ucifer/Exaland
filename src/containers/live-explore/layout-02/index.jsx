@@ -35,11 +35,11 @@ const LiveExploreArea = ({ nfts, className, space, gap }) => (
                                 placeBid="ssa"
                                 title={prod.name}
                                 id={prod.tokenId}
-                                auction_date="12 June 2022"
+                                auction_date={prod.date}
                                 latestBid="sdsd"
                                 price={prod.price}
                                 likeCount="1"
-                                image={prod.image}
+                                image={prod.Image_cover}
                                 authors={prod.seller}
                                 bitCount="0"
                             />

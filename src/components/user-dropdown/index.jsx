@@ -30,7 +30,7 @@ const UserDropdown = () => {
                             <div className="thumbnail">
                                 <Anchor path="/product">
                                     <Image
-                                        src="/images/portfolio/portfolio-07.jpg"
+                                        src="https://zoho-xscc.s3.ap-south-1.amazonaws.com/eth-diamond-black-white.jpg"
                                         alt="Nft Product Images"
                                         layout="fixed"
                                         width={50}

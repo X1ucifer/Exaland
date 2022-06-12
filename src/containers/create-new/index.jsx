@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
@@ -11,32 +11,79 @@ import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
 import Web3Modal from 'web3modal'
+import Resizer from "react-image-file-resizer";
+import axios from "axios";
 import {
     marketplaceAddress
 } from '../../../config'
 
 import NFTMarketplace from '../../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
 
+
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 
 const CreateNewArea = ({ className, space }) => {
+
+
     const [showProductModal, setShowProductModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState();
     const [selectedVideo, setSelectedVideo] = useState();
+    const [Image_cover, setImageCover] = useState("");
     const [hasImageError, setHasImageError] = useState(false);
     const [previewData, setPreviewData] = useState({});
+    const [nfts, setNfts] = useState([])
 
     const [fileUrl, setFileUrl] = useState(null)
+    const [date, setDate] = useState("")
+    const [author_name, setAuthorName] = useState("")
+    const [loading, setLoading] = useState(false);
+
     const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
     const router = useRouter()
 
+    const handleImage = (e) => {
+        let file1 = e.target.files[0];
+        console.log("4sdsd54", e.target.files[0])
+        setSelectedImage(e.target.files[0]);
 
+        setLoading(true);
+
+
+
+        // resize
+        Resizer.imageFileResizer(file1, 720, 500, "JPEG", 100, 0, async (uri) => {
+            try {
+                let { data } = await axios.post(`/api/image_upload`, {
+                    image: uri,
+                });
+                console.log("IMAGE UPLOADED", data.Location);
+
+                setImageCover(data.Location)
+
+                // setEditPage(false)
+                setLoading(false);
+
+            } catch (err) {
+                console.log(err);
+
+                toast("Image uploaded");
+            }
+        });
+
+    };
+
+    console.log("image", Image_cover)
 
     async function onChange(e) {
 
-        setSelectedImage(e.target.files[0]);
+        // setSelectedImage(e.target.files[0]);
         setSelectedVideo(e.target.files[0]);
+
+        //aws
+
+
+        //aws
 
         const file = e.target.files[0]
         try {
@@ -57,12 +104,13 @@ const CreateNewArea = ({ className, space }) => {
 
         /* first, upload to IPFS */
         const data = JSON.stringify({
-            name, description, image: fileUrl
+            name, description, image: fileUrl, Image_cover, date, author_name
         })
         try {
             const added = await client.add(data)
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
             /* after file is uploaded to IPFS, return the URL to use it in the transaction */
+            console.log("ipppp", url)
             return url
         } catch (error) {
             console.log('Error uploading file: ', error)
@@ -83,6 +131,11 @@ const CreateNewArea = ({ className, space }) => {
         listingPrice = listingPrice.toString()
         let transaction = await contract.createToken(url, price, { value: listingPrice })
         await transaction.wait()
+
+
+        //list
+
+
 
         router.push('/')
     }
@@ -111,7 +164,7 @@ const CreateNewArea = ({ className, space }) => {
         const isPreviewBtn = submitBtn.dataset?.btn;
         setHasImageError(!selectedImage);
         if (isPreviewBtn && selectedImage) {
-            setPreviewData({ ...data, image: selectedImage });
+            setPreviewData({ ...data, image: Image_cover });
             setShowProductModal(true);
         }
         if (!isPreviewBtn) {
@@ -120,6 +173,10 @@ const CreateNewArea = ({ className, space }) => {
             setSelectedImage();
         }
     };
+
+
+
+
 
     return (
         <>
@@ -134,13 +191,8 @@ const CreateNewArea = ({ className, space }) => {
                     <div className="container">
                         <div className="row g-5">
                             <div className="col-lg-3 offset-1 ml_md--0 ml_sm--0">
-                                <div className="upload-area">
-                                    <div className="upload-formate mb--30">
-                                        <h6 className="title">Upload file</h6>
-                                        <p className="formate">
-                                            Drag or choose your file to upload
-                                        </p>
-                                    </div>
+                                <div className="upload-area mt--30">
+
 
                                     <div className="brows-file-wrapper">
                                         <input
@@ -187,24 +239,13 @@ const CreateNewArea = ({ className, space }) => {
                                     )}
                                 </div>
 
-                                <div className="upload-area">
-                                    <div className="upload-formate mb--30">
-                                        <h6 className="title">Upload file</h6>
-                                        <p className="formate">
-                                            Drag or choose your file to upload
-                                        </p>
-                                    </div>
+                                <div className="upload-area mt--30">
+
 
                                     <div className="brows-file-wrapper">
-                                        <input
-                                            name="file"
-                                            id="file"
-                                            type="file"
-                                            className="inputfile"
-                                            data-multiple-caption="{count} files selected"
-                                            multiple
-                                            onChange={onChange}
-                                        />
+
+
+
                                         {selectedImage && (
                                             <img
                                                 id="createfileImage"
@@ -219,9 +260,15 @@ const CreateNewArea = ({ className, space }) => {
 
 
                                         <label
-                                            htmlFor="file"
-                                            title="No File Choosen"
+
                                         >
+                                            <input
+                                                type="file"
+                                                name="image"
+                                                onChange={handleImage}
+                                                accept="image/*"
+                                                hidden
+                                            />
                                             <i className="feather-upload" />
                                             <span className="text-center">
                                                 Choose a File
@@ -233,7 +280,7 @@ const CreateNewArea = ({ className, space }) => {
                                         </label>
                                     </div>
                                     {hasImageError && !selectedImage && (
-                                        <ErrorText>Image is required</ErrorText>
+                                        <ErrorText>Video is required</ErrorText>
                                     )}
                                 </div>
 
@@ -270,6 +317,28 @@ const CreateNewArea = ({ className, space }) => {
                                                             "Name is required",
                                                     })}
                                                     onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
+                                                />
+                                                {errors.name && (
+                                                    <ErrorText>
+                                                        {errors.name?.message}
+                                                    </ErrorText>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="col-md-12">
+                                            <div className="input-box pb--20">
+                                                <label
+                                                    htmlFor="name"
+                                                    className="form-label"
+                                                >
+                                                    Author Name
+                                                </label>
+                                                <input
+                                                    id="name"
+                                                    placeholder="e. g. `John Doe`"
+                                                    value={author_name}
+                                                    onChange={e => setAuthorName(e.target.value)}
                                                 />
                                                 {errors.name && (
                                                     <ErrorText>
@@ -323,17 +392,10 @@ const CreateNewArea = ({ className, space }) => {
                                                 <input
                                                     id="name"
                                                     placeholder="e. g. `22 June 2022`"
-                                                    {...register("name", {
-                                                        required:
-                                                            "Date is required",
-                                                    })}
-                                                    onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
+                                                    value={date}
+                                                    onChange={e => setDate(e.target.value)}
                                                 />
-                                                {errors.name && (
-                                                    <ErrorText>
-                                                        {errors.name?.message}
-                                                    </ErrorText>
-                                                )}
+
 
                                             </div>
                                         </div>

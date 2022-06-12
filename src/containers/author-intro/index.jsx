@@ -6,10 +6,26 @@ import { ImageType } from "@utils/types";
 import ShareDropdown from "@components/share-dropdown";
 import ShareModal from "@components/modals/share-modal";
 import Anchor from "@ui/anchor";
+import React, { Fragment, useContext, useEffect } from 'react';
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Context } from "../../context";
+
 
 const AuthorIntroArea = ({ className, space, data }) => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const shareModalHandler = () => setIsShareModalOpen((prev) => !prev);
+
+    const { state, dispatch } = useContext(Context);
+    const { user } = state;
+
+    console.log("67576", user)
+
+    useEffect(() => {
+        user
+    }, [])
+
+
     return (
         <>
             <ShareModal
@@ -18,7 +34,7 @@ const AuthorIntroArea = ({ className, space, data }) => {
             />
             <div className="rn-author-bg-area position-relative ptb--150">
                 <Image
-                    src="/images/bg/bg-image-9.jpg"
+                    src="https://zoho-xscc.s3.ap-south-1.amazonaws.com/image2.png"
                     alt="Slider BG"
                     layout="fill"
                     objectFit="cover"
@@ -41,7 +57,7 @@ const AuthorIntroArea = ({ className, space, data }) => {
                                     {data?.image?.src && (
                                         <div className="user-thumbnail">
                                             <Image
-                                                src={data.image.src}
+                                                src="https://zoho-xscc.s3.ap-south-1.amazonaws.com/HD-wallpaper-rinnegan-anime-kekegenkai-madara-manga-naruto-pain-purple-sasuke-shippudden.jpg"
                                                 alt={
                                                     data.image?.alt || data.name
                                                 }

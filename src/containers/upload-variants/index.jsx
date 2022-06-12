@@ -27,7 +27,7 @@ const UploadVariants = ({ className, space }) => (
                     <div className="upload-variant-wrapper">
                         <div className="variant-preview">
                             <Image
-                                src="/images/upload-variants/single.jpg"
+                                src="https://zoho-xscc.s3.ap-south-1.amazonaws.com/HD-wallpaper-aurora-sky-ultra-aero-creative-planets-night-sky-aurora-stars-colors-universe-space-sky-lights-dog-man.jpg"
                                 alt="nuron-single"
                                 width={495}
                                 height={417}
@@ -48,7 +48,7 @@ const UploadVariants = ({ className, space }) => (
                     <div className="upload-variant-wrapper">
                         <div className="variant-preview">
                             <Image
-                                src="/images/upload-variants/multiple.jpg"
+                                src="https://zoho-xscc.s3.ap-south-1.amazonaws.com/artwork-fantasy-art-concept-art-sky-wallpaper-preview.jpg"
                                 alt="nuron-single"
                                 width={495}
                                 height={417}

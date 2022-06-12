@@ -41,15 +41,14 @@ const Product = ({
                 <div className="card-thumbnail">
                     {image && (
                         <Anchor path={`/product/${id}`}>
-                            <video
-                                muted
-                                loop
-                                autoPlay
+
+                            <Image
                                 src={image}
                                 // alt={image?.alt || "NFT_portfolio"}
                                 width={533}
                                 height={533}
                             />
+                           
                         </Anchor>
                     )}
                     {auction_date && <CountdownTimer date={auction_date} />}

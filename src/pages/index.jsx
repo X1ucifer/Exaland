@@ -9,6 +9,7 @@ import ExploreProductArea from "@containers/explore-product/layout-02";
 import TopSellerArea from "@containers/top-seller/layout-01";
 import CollectionArea from "@containers/collection/layout-01";
 import { normalizedData } from "@utils/methods";
+import { toast } from "react-toastify";
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -32,6 +33,7 @@ export async function getStaticProps() {
 const Home02 = () => {
 
     const [nfts, setNfts] = useState([])
+    const [dbdata, setDB] = useState()
     const [loadingState, setLoadingState] = useState('not-loaded')
     useEffect(() => {
         loadNFTs()
@@ -52,6 +54,9 @@ const Home02 = () => {
             let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
             let item = {
                 price,
+                Image_cover: meta.data.Image_cover,
+                date: meta.data.date,
+                author_name: meta.data.author_name,
                 tokenId: i.tokenId.toNumber(),
                 seller: i.seller,
                 owner: i.owner,
@@ -64,6 +69,8 @@ const Home02 = () => {
         setNfts(items)
         setLoadingState('loaded')
     }
+
+
     async function buyNft(nft) {
         /* needs the user to sign the transaction, so will use Web3Provider and sign it */
         const web3Modal = new Web3Modal()
