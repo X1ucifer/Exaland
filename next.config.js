@@ -3,12 +3,11 @@ const path = require("path");
 module.exports = {
 
     images: {
-        domains: ['img.seadn.io'],
-        domains: ['https://nuron-nextjs.vercel.app/'],
-        domains: ['zoho-xscc.s3.ap-south-1.amazonaws.com']
+        domains: ['img.seadn.io', 'zoho-xscc.s3.ap-south-1.amazonaws.com', 'zoho-xscc.s3.amazonaws.com'],
+
     },
 
-    reactStrictMode: true,
+    reactStrictMode: false,
     sassOptions: {
         includePaths: [path.join(__dirname, "./src/assets/scss")],
     },
